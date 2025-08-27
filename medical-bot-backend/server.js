@@ -43,13 +43,6 @@ app.use(
   })
 );
 
-// Configure CORS
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-    credentials: true,
-  })
-);
 
 // Basic request rate limiting
 const limiter = rateLimit({
@@ -60,17 +53,31 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS setup
+// CORS setup (define once)
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",")
-  : ["http://localhost:3000","http://localhost:5173"];
+  : ["http://localhost:3000", "http://localhost:5173"];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Handle preflight explicitly
+app.options("*", cors());
+
 
 // Request Logger
 app.use((req, _, next) => {
