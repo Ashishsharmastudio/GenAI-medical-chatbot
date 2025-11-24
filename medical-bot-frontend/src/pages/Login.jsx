@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import SEO from "../components/SEO";
 
 const Login = () => {
   const { login, google } = useAuth();
@@ -54,14 +55,11 @@ const Login = () => {
   }, [GOOGLE_CLIENT_ID]);
 
   async function handleCredentialResponse(response) {
-    // response.credential is the ID token
     if (!response?.credential) return;
     setLoading(true);
     setErr("");
     try {
-      console.log("Google response:", response);
-      const user = await google(response.credential);
-      console.log("Login successful, user data:", user);
+      await google(response.credential);
       nav("/chat");
     } catch (e) {
       console.error("Google login error:", e);
@@ -86,70 +84,109 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center p-4 md:p-8">
-      <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden">
-        <div className="bg-blue-600 rounded-t-2xl p-6 md:p-8 flex items-center justify-center">
-          <div className="flex items-center text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 mr-2"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 21.35l-1.84-1.66C4.62 14.6 1 11.23 1 7.4c0-3.04 2.4-5.49 5.37-5.5h.13c1.7 0 3.33.83 4.3 2.22l.2.29.2-0.29c.97-1.39 2.6-2.22 4.3-2.22h.13c2.97.01 5.37 2.46 5.37 5.5 0 3.83-3.62 7.2-9.16 12.29L12 21.35z" />
-            </svg>
-            <span className="text-3xl font-bold">MedGuide AI</span>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 flex items-center justify-center p-4 relative overflow-hidden">
+      <SEO
+        title="Login"
+        description="Sign in to MedGuide AI to access your personalized health assistant."
+        canonical="https://medguide-ai.com/login"
+      />
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -translate-x-1/2 -translate-y-1/2 animate-blob"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-x-1/2 -translate-y-1/2 animate-blob animation-delay-2000"></div>
+      <div className="absolute -bottom-32 left-20 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
 
-        <div className="p-8 md:p-12 text-center">
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-2">Login</h1>
-          <p className="text-gray-500 mb-6 md:mb-8">Your health conversations are private & secure.</p>
+      {/* Back to Home Link */}
+      <Link to="/" className="absolute top-8 left-8 text-gray-500 hover:text-blue-600 flex items-center font-medium transition-all hover:-translate-x-1 z-10">
+        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Home
+      </Link>
+
+      <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-white/50 relative z-10">
+        <div className="p-8 md:p-10">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 text-white font-bold text-xl mb-4 shadow-lg shadow-blue-200">
+              M
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+            <p className="text-gray-500">Sign in to continue your health journey</p>
+          </div>
 
           {err && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4 text-sm" role="alert">
-              <span className="block sm:inline">{err}</span>
+            <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm flex items-center">
+              <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {err}
             </div>
           )}
 
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              className="w-full p-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full p-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <div className="text-right mb-2">
-              <Link to="#" className="text-sm text-blue-600 hover:underline">Forgot password?</Link>
+            <div>
+              <div className="flex justify-between items-center mb-1.5">
+                <label className="block text-sm font-medium text-gray-700">Password</label>
+                <Link to="#" className="text-sm text-blue-600 hover:text-blue-700 font-medium">Forgot password?</Link>
+              </div>
+              <input
+                type="password"
+                placeholder="••••••••"
+                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
             <button
               type="submit"
-              className="w-full p-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+              className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:shadow-xl hover:scale-[1.02] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Login"}
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Signing in...
+                </span>
+              ) : "Sign In"}
             </button>
           </form>
 
-          <div className="mt-4 max-w-sm mx-auto">
-            {GOOGLE_CLIENT_ID ? (
-              <div ref={googleButtonRef} />
-            ) : null}
+          <div className="mt-8">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              {GOOGLE_CLIENT_ID ? (
+                <div ref={googleButtonRef} className="flex justify-center" />
+              ) : null}
+            </div>
           </div>
 
-          <p className="text-gray-500 text-sm mt-6">
-            No account? <Link to="/signup" className="text-blue-600 hover:underline">Sign up</Link>
+          <p className="text-center mt-8 text-gray-600">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-blue-600 font-bold hover:text-blue-700 transition-colors">
+              Sign up for free
+            </Link>
           </p>
         </div>
       </div>

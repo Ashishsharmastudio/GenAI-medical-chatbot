@@ -1,12 +1,55 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+import SEO from '../components/SEO';
+
 export default function Landing() {
     const navigate = useNavigate();
     const [openFaq, setOpenFaq] = useState(null);
 
+    // Structured Data for Organization and FAQ
+    const structuredData = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SoftwareApplication",
+                "name": "MedGuide AI",
+                "applicationCategory": "MedicalApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                },
+                "description": "AI-powered medical assistant providing instant health guidance and symptom checking."
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Is MedGuide AI free to use?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Yes, our core features are completely free for patients."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Is my data secure?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Absolutely. We use enterprise-grade encryption and are HIPAA compliant."
+                        }
+                    }
+                ]
+            }
+        ]
+    };
+
     // SVG Icons for premium look
     const Icons = {
+        // ... icons remain same
         Check: () => (
             <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
@@ -36,6 +79,15 @@ export default function Landing() {
 
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">
+            <SEO
+                title="AI Medical Assistant & Symptom Checker"
+                description="MedGuide AI provides instant, accurate medical guidance and symptom checking using advanced artificial intelligence. Secure, reliable, and available 24/7."
+                keywords="medical ai, symptom checker, health assistant, ai doctor, telemedicine"
+                canonical="https://medguide-ai.com/"
+            />
+            <script type="application/ld+json">
+                {JSON.stringify(structuredData)}
+            </script>
             {/* Navigation */}
             <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

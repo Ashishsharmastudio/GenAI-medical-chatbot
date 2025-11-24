@@ -4,12 +4,16 @@ import { router } from "./routes";
 import { AuthProvider } from "./context/AuthContext";
 import { ChatProvider } from "./context/ChatContext";
 
+import { HelmetProvider } from 'react-helmet-async';
+
 export default function App() {
   return (
-    <AuthProvider>
-      <ChatProvider>
-        <RouterProvider router={router} />
-      </ChatProvider>
-    </AuthProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <ChatProvider>
+          <RouterProvider router={router} />
+        </ChatProvider>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
