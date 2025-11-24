@@ -21,7 +21,7 @@ export default function Signup() {
             setErr("");
             try {
               await signup(email, password);
-              nav("/");
+              nav("/chat");
             } catch (e) {
               setErr(e.message);
             }

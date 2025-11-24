@@ -62,7 +62,7 @@ const Login = () => {
       console.log("Google response:", response);
       const user = await google(response.credential);
       console.log("Login successful, user data:", user);
-      nav("/");
+      nav("/chat");
     } catch (e) {
       console.error("Google login error:", e);
       setErr(e?.message || "Google login failed");
@@ -77,7 +77,7 @@ const Login = () => {
     setLoading(true);
     try {
       await login(email, password);
-      nav("/");
+      nav("/chat");
     } catch (e) {
       setErr(e?.message || "Login failed");
     } finally {
