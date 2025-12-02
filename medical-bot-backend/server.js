@@ -11,7 +11,6 @@ import adminRoutes from "./routes/adminRoutes.js";
 import logger from "./utils/logger.js";
 import { PORT } from "./config/index.js";
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -22,10 +21,10 @@ connectDB().catch((err) => {
   process.exit(1);
 });
 
-// Middlewares
-app.use(express.json()); // Parse JSON request bodies
+// Body Parser
+app.use(express.json());
 
-// Configure security headers with specific settings for Google Sign-In
+// Helmet Security
 app.use(
   helmet({
     crossOriginEmbedderPolicy: false,
@@ -43,29 +42,36 @@ app.use(
   })
 );
 
-
-// Basic request rate limiting
+// Rate Limiting
 const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 60, // Max 60 requests per window
+  windowMs: 1 * 60 * 1000,
+  max: 60,
   standardHeaders: true,
   legacyHeaders: false,
 });
 app.use(limiter);
 
-// CORS setup (define once)
+// -------------------------
+// ✅ FIXED CORS SETUP
+// -------------------------
 const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(",")
-  : ["http://localhost:3000", "http://localhost:5173"];
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim()) // remove spaces
+  : [
+      "http://localhost:3000",
+      "http://localhost:5173",
+    ];
+
+console.log("✔ Allowed CORS Origins:", allowedOrigins);
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like mobile apps, curl, Postman)
-      if (!origin) return callback(null, true);
+      if (!origin) return callback(null, true); // Postman, curl, mobile apps
+
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       } else {
+        console.log("❌ Blocked by CORS:", origin);
         return callback(new Error("Not allowed by CORS"));
       }
     },
@@ -75,9 +81,8 @@ app.use(
   })
 );
 
-// Handle preflight explicitly
+// Preflight
 app.options("*", cors());
-
 
 // Request Logger
 app.use((req, _, next) => {
@@ -85,7 +90,7 @@ app.use((req, _, next) => {
   next();
 });
 
-// Health check endpoint
+// Health Check
 app.get("/api/health", (_, res) => res.json({ ok: true }));
 
 // Routes
@@ -93,15 +98,15 @@ app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/admin", adminRoutes);
 
-// Handle unhandled routes
-app.use((req, res, next) => {
+// 404 Handler
+app.use((req, res) => {
   res.status(404).json({ status: "fail", message: "Route not found" });
 });
 
 // Global Error Handler
 app.use(errorHandler);
 
-// Start server
+// Server Start
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
