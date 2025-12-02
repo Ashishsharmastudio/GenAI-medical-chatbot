@@ -1,10 +1,22 @@
 // /medical-bot-backend/controllers/authController.js
+
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import User from "../models/User.js";
 import { JWT_SECRET } from "../config/index.js";
 
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+// -----------------------------------------
+// ✅ Support MULTIPLE GOOGLE CLIENT IDs
+// -----------------------------------------
+const allowedClientIds = process.env.GOOGLE_CLIENT_IDS
+  ? process.env.GOOGLE_CLIENT_IDS.split(",").map((id) => id.trim())
+  : process.env.GOOGLE_CLIENT_ID
+  ? [process.env.GOOGLE_CLIENT_ID]
+  : [];
+
+console.log("✔ Allowed Google OAuth Client IDs:", allowedClientIds);
+
+const googleClient = new OAuth2Client();
 
 // -------------------- helpers --------------------
 function createToken(userId) {
@@ -12,9 +24,7 @@ function createToken(userId) {
 }
 
 function normalizeEmail(email) {
-  return String(email || "")
-    .toLowerCase()
-    .trim();
+  return String(email || "").toLowerCase().trim();
 }
 
 function publicUser(user) {
@@ -27,7 +37,7 @@ function publicUser(user) {
   };
 }
 
-// -------------------- controllers --------------------
+// ----------------------- SIGNUP -----------------------
 export async function signup(req, res, next) {
   try {
     const email = normalizeEmail(req.body.email);
@@ -56,6 +66,7 @@ export async function signup(req, res, next) {
   }
 }
 
+// ----------------------- LOGIN -----------------------
 export async function login(req, res, next) {
   try {
     const email = normalizeEmail(req.body.email);
@@ -66,13 +77,11 @@ export async function login(req, res, next) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    // block password login for Google-only accounts
+    // Block if they are supposed to login via Google
     if (user.provider === "google" && !user.password) {
-      return res
-        .status(400)
-        .json({
-          error: "This account uses Google Sign-In. Use /api/auth/google.",
-        });
+      return res.status(400).json({
+        error: "This account uses Google Sign-In. Use /api/auth/google.",
+      });
     }
 
     const ok = await user.comparePassword(password);
@@ -88,43 +97,46 @@ export async function login(req, res, next) {
   }
 }
 
+// ----------------------- GOOGLE LOGIN -----------------------
 export async function googleLogin(req, res, next) {
   try {
     const { idToken } = req.body;
     if (!idToken) return res.status(400).json({ error: "Missing idToken" });
 
-    // Verify token with Google
+    // -----------------------------------------------
+    // 🔥 Verify Google ID token with MULTIPLE CLIENT IDs
+    // -----------------------------------------------
     const ticket = await googleClient.verifyIdToken({
       idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: allowedClientIds,   // <-- IMPORTANT CHANGE
     });
-    const payload = ticket.getPayload();
 
+    const payload = ticket.getPayload();
     const googleId = payload.sub;
     const email = normalizeEmail(payload.email);
     const name = payload.name || payload.given_name || null;
     const picture = payload.picture || null;
-    
-    // Extract more profile information
+
+    // Extract additional Google profile info
     const profile = {
-      name: name,
-      picture: picture,
+      name,
+      picture,
       givenName: payload.given_name || null,
       familyName: payload.family_name || null,
       locale: payload.locale || null,
-      email: email,
-      emailVerified: payload.email_verified || false
+      email,
+      emailVerified: payload.email_verified || false,
     };
 
     if (!email) {
       return res.status(400).json({ error: "Google profile missing email" });
     }
 
-    // Find or create user
+    // Find existing user
     let user = await User.findOne({ $or: [{ googleId }, { email }] });
 
     if (!user) {
-      // Create new user with Google profile
+      // Create new Google user
       user = new User({
         email,
         provider: "google",
@@ -136,37 +148,36 @@ export async function googleLogin(req, res, next) {
       });
       await user.save();
     } else {
-      // Update existing user with latest Google profile
+      // Update user with latest Google data
       user.provider = "google";
       user.googleId = user.googleId || googleId;
-      
-      // Always update profile with latest Google data
+
       user.name = profile.name;
       user.picture = profile.picture;
       user.googleProfile = profile;
       user.lastLoginAt = new Date();
-      
-      // If the user previously didn't have a name/picture, ensure they're updated
-      if (!user.name) user.name = profile.name;
-      if (!user.picture) user.picture = profile.picture;
-      
+
       await user.save();
     }
 
     const token = createToken(user._id);
     res.json({ token, user: publicUser(user) });
   } catch (err) {
-    err.statusCode = 401; // invalid token / wrong audience
+    console.error("💥 Google Login Error:", err);
+    err.statusCode = 401;
     next(err);
   }
 }
 
+// ----------------------- ME -----------------------
 export async function me(req, res, next) {
   try {
     const userId = req.user && req.user.id;
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: "User not found" });
+
     res.json({ user: publicUser(user) });
   } catch (err) {
     next(err);
