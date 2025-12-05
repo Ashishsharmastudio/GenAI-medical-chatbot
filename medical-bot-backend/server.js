@@ -8,6 +8,7 @@ import errorHandler from "./middleware/errorHandler.js";
 import authRoutes from "./routes/authRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import landingRoutes from "./routes/landing.js";
 import logger from "./utils/logger.js";
 import { PORT } from "./config/index.js";
 
@@ -57,9 +58,9 @@ app.use(limiter);
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim()) // remove spaces
   : [
-      "http://localhost:3000",
-      "http://localhost:5173",
-    ];
+    "http://localhost:3000",
+    "http://localhost:5173",
+  ];
 
 console.log("✔ Allowed CORS Origins:", allowedOrigins);
 
@@ -97,6 +98,7 @@ app.get("/api/health", (_, res) => res.json({ ok: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/landing", landingRoutes);
 
 // 404 Handler
 app.use((req, res) => {

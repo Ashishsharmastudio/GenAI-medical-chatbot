@@ -69,7 +69,7 @@ Healthcare practitioners aren't short of expertise—they're short of **time**. 
   - Clinical context summarization
 
 - **User Management**
-  - Secure authentication with JWT tokens
+  - Secure authentication with JWT tokens + Google OAuth
   - Role-based access control (Patient, Clinician, Admin)
   - Conversation history per user
 
@@ -77,6 +77,44 @@ Healthcare practitioners aren't short of expertise—they're short of **time**. 
   - MongoDB-based chat history
   - Audit trail for compliance
   - Searchable patient interactions
+
+### 🚀 **NEW: Lead Generation & Client Acquisition**
+
+- **Landing Page Chatbot Widget** 🤖
+  - Floating chat button with interactive qualification bot
+  - Smart lead qualification with specialty detection
+  - Conversational pitch for service offerings
+  - Lead capture form after 2-3 message exchanges
+  - LocalStorage persistence for conversation continuity
+  - Source tracking: `landing_chatbot`
+
+- **Functional Contact Form** 📝
+  - Full contact form with specialty dropdown
+  - API integration with lead capture system
+  - Success/error feedback with validation
+  - Auto-reset after successful submission
+  - Source tracking: `contact_form`
+
+- **Booking Modal System** 📅
+  - Beautiful modal popup for consultation bookings
+  - Comprehensive form (name, email, phone, specialty, date, notes)
+  - Integrated across landing page and chat interface
+  - Smooth animations with responsive design
+  - Source tracking: `booking_modal`
+
+- **Email Notification System** 📧
+  - Automated admin alerts for new leads
+  - Welcome emails to captured leads
+  - Conversation history in notifications
+  - Specialty extraction and metadata
+  - Powered by Nodemailer with Gmail integration
+
+- **Lead Management API**
+  - MongoDB Lead model with full tracking
+  - Source-based analytics (chatbot/form/booking)
+  - Status management (new/contacted/qualified/converted)
+  - Admin endpoints for lead viewing and updates
+  - Metadata capture (specialty, practice size, etc.)
 
 ### 🎨 Frontend Features
 
@@ -87,24 +125,27 @@ Healthcare practitioners aren't short of expertise—they're short of **time**. 
   - US healthcare compliance messaging
 
 - **Modular Component Architecture**
-  - 14+ reusable landing components
+  - 17+ reusable landing components (including new booking/chat widgets)
   - Consistent design system
   - Easy to maintain and extend
 
 - **Interactive UI**
   - FAQ accordion
-  - Contact form
+  - Functional contact form with API integration
   - Success stories
   - Solutions showcase
+  - **NEW:** Floating chatbot widget
+  - **NEW:** Booking modal
 
 ### 🔒 Security & Compliance
 
 - HIPAA-style security architecture
 - Enterprise-grade encryption (AES-256)
-- Secure authentication (JWT with HTTP-only cookies)
+- Secure authentication (JWT with HTTP-only cookies + Google OAuth)
 - CORS protection
 - Rate limiting
 - Input sanitization
+- **NEW:** Lead data privacy and secure storage
 
 ---
 
@@ -119,16 +160,20 @@ Healthcare practitioners aren't short of expertise—they're short of **time**. 
 - **SEO**: React Helmet Async
 
 ### Backend
-- **Framework**: Flask 3 (Python)
+- **Framework**: Node.js + Express
 - **Database**: MongoDB (Mongoose ODM)
 - **AI/ML**: 
   - Google Generative AI (Gemini)
   - LangChain for conversation chains
   - FAISS for vector search
   - Sentence Transformers for embeddings
-- **Authentication**: JWT (PyJWT)
+- **Authentication**: 
+  - JWT (jsonwebtoken)
+  - Google OAuth 2.0 (google-auth-library)
+- **Email**: Nodemailer (Gmail integration)
 - **API**: RESTful architecture
-- **CORS**: Flask-CORS
+- **CORS**: cors middleware
+- **Security**: Helmet, rate-limit
 
 ### DevOps & Tools
 - **Version Control**: Git
@@ -264,39 +309,53 @@ cd medical-bot-frontend && npm run dev
 
 ```
 MedGuide-AI/
-├── medical-bot-backend/          # Flask backend
+├── medical-bot-backend/          # Node.js/Express backend
 │   ├── config/                   # Configuration files
 │   ├── controllers/              # Route controllers
 │   │   ├── authController.js
+│   │   ├── adminController.js
 │   │   ├── chatController.js
-│   │   └── userController.js
+│   │   └── landingController.js  # NEW: Lead capture endpoints
 │   ├── middleware/               # Auth & validation
 │   ├── models/                   # MongoDB models
 │   │   ├── User.js
-│   │   ├── Conversation.js
-│   │   └── Message.js
+│   │   ├── Lead.js               # NEW: Lead tracking model
+│   │   └── Conversation.js
 │   ├── routes/                   # API routes
+│   │   ├── authRoutes.js
+│   │   ├── chatRoutes.js
+│   │   ├── adminRoutes.js
+│   │   └── landing.js            # NEW: Lead generation routes
 │   ├── services/                 # Business logic
 │   │   ├── geminiService.js
-│   │   ├── ragService.js
-│   │   └── vectorService.js
+│   │   └── ragService.js
 │   ├── utils/                    # Helper functions
+│   │   ├── logger.js
+│   │   └── emailNotifier.js      # NEW: Email notification system
 │   ├── data/                     # Medical knowledge base
 │   ├── .env.example
+│   ├── EMAIL_SETUP.md            # NEW: Email configuration guide
 │   ├── package.json
 │   └── server.js
 │
 ├── medical-bot-frontend/         # React frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── landing/         # 14 modular components
+│   │   │   ├── landing/          # Landing page components
+│   │   │   │   ├── Navigation.jsx
+│   │   │   │   ├── HeroSection.jsx
+│   │   │   │   ├── ContactForm.jsx        # UPDATED: API integration
+│   │   │   │   ├── CTABanner.jsx          # UPDATED: Booking modal
+│   │   │   │   ├── LandingChatWidget.jsx  # NEW: Chatbot widget
+│   │   │   │   ├── BookingModal.jsx       # NEW: Booking modal
+│   │   │   │   └── ...
 │   │   │   ├── ChatInput.jsx
 │   │   │   ├── MessageBubble.jsx
 │   │   │   ├── SEO.jsx
 │   │   │   └── ...
 │   │   ├── pages/
-│   │   │   ├── Landing.jsx
-│   │   │   ├── Chat.jsx
+│   │   │   ├── Landing.jsx        # UPDATED: Widget integration
+│   │   │   ├── Chat.jsx           # UPDATED: Booking modal
 │   │   │   ├── Login.jsx
 │   │   │   └── Signup.jsx
 │   │   ├── App.jsx
@@ -342,6 +401,69 @@ Register a new user.
 
 #### POST `/api/auth/login`
 Authenticate user.
+
+#### POST `/api/auth/google`
+Authenticate with Google OAuth.
+
+**Request:**
+```json
+{
+  "idToken": "google_id_token_here"
+}
+```
+
+### **NEW: Lead Generation Endpoints**
+
+#### POST `/api/landing/lead`
+Capture lead information from landing page (chatbot, contact form, or booking modal).
+
+**Request:**
+```json
+{
+  "name": "Dr. John Smith",
+  "email": "john@practice.com",
+  "phone": "+91-9140585097",
+  "conversation": [
+    { "role": "user", "content": "Message content" }
+  ],
+  "source": "landing_chatbot|contact_form|booking_modal",
+  "metadata": {
+    "specialty": "Dental",
+    "preferredDate": "2025-12-10",
+    "formMessage": "Additional notes"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Lead captured successfully",
+  "leadId": "lead_12345"
+}
+```
+
+#### GET `/api/landing/leads`
+Get all captured leads (admin only).
+
+**Query Parameters:**
+- `status`: Filter by status (new/contacted/qualified/converted)
+- `source`: Filter by source (landing_chatbot/contact_form/booking_modal)
+- `limit`: Results per page (default: 50)
+- `skip`: Pagination offset
+
+**Response:**
+```json
+{
+  "success": true,
+  "leads": [...],
+  "total": 42
+}
+```
+
+#### PATCH `/api/landing/leads/:leadId`
+Update lead status and add notes (admin only).
 
 ### Chat Endpoints
 
@@ -402,6 +524,16 @@ JWT_EXPIRE=7d
 
 # Google AI
 GOOGLE_API_KEY=your_google_gemini_api_key
+
+# Google OAuth
+GOOGLE_CLIENT_IDS=your-client-id.apps.googleusercontent.com
+
+# Email Notifications (Optional)
+ENABLE_EMAIL_NOTIFICATIONS=true
+ADMIN_EMAIL=ashishsharmastudio@gmail.com
+EMAIL_SERVICE=gmail
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your_gmail_app_password
 
 # CORS
 FRONTEND_URL=http://localhost:5173
@@ -515,14 +647,29 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 🗺 Roadmap
 
-- [ ] Chat-native booking integration
-- [ ] Admin dashboard for clinic owners
+### ✅ Completed
+- [x] Landing page chatbot widget for lead generation
+- [x] Functional contact form with API integration
+- [x] Booking modal system across the platform
+- [x] Email notification system (admin alerts + lead welcome emails)
+- [x] Lead management API with MongoDB storage
+- [x] Google OAuth authentication
+- [x] Multi-client ID support for OAuth
+
+### 🚀 In Progress
+- [ ] Lead management dashboard (admin UI)
+- [ ] Advanced analytics for lead conversion tracking
+- [ ] Calendar integration (Calendly embed in booking modal)
+
+### 📋 Planned
 - [ ] Multi-language support
 - [ ] Voice input/output
 - [ ] Mobile applications (iOS/Android)
 - [ ] Integration with EHR systems
-- [ ] Advanced analytics and reporting
 - [ ] Telehealth video consultation
+- [ ] WhatsApp Business API integration
+- [ ] SMS notifications for appointments
+- [ ] Advanced reporting with charts and metrics
 
 ---
 

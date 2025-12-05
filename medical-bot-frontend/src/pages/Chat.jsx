@@ -1,6 +1,7 @@
 import MessageBubble from "../components/MessageBubble";
 import ChatInput from "../components/ChatInput";
 import Topbar from "../components/Topbar";
+import BookingModal from "../components/landing/BookingModal";
 import { useChat } from "../context/ChatContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ export default function Chat() {
   const nav = useNavigate();
   const { activeChat, activeId, newChat, sendMessage, isLoading } = useChat();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   useEffect(() => {
     if (!user) nav("/login");
@@ -101,7 +103,7 @@ export default function Chat() {
 
             <div className="p-4 border-t border-gray-200">
               <button
-                onClick={() => window.open('https://calendly.com', '_blank')}
+                onClick={() => setIsBookingOpen(true)}
                 className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,6 +287,9 @@ export default function Chat() {
           </div>
         </div>
       </main>
+
+      {/* Booking Modal */}
+      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </div>
   );
 }

@@ -20,6 +20,7 @@ import SuccessStories from '../components/landing/SuccessStories';
 import FAQSection from '../components/landing/FAQSection';
 import ContactForm from '../components/landing/ContactForm';
 import Footer from '../components/landing/Footer';
+import LandingChatWidget from '../components/landing/LandingChatWidget';
 import { specialties, structuredData } from '../components/landing/constants';
 
 export default function Landing() {
@@ -77,6 +78,9 @@ export default function Landing() {
             <FAQSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
             <ContactForm />
             <Footer />
+
+            {/* Floating Chat Widget */}
+            <LandingChatWidget />
         </div>
     );
 }
