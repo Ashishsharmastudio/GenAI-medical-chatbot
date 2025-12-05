@@ -2,9 +2,20 @@
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import User from "../models/User.js";
-import { JWT_SECRET, GOOGLE_CLIENT_ID } from "../config/index.js";
+import { JWT_SECRET } from "../config/index.js";
 
-const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
+// -----------------------------------------
+// ✅ Support MULTIPLE GOOGLE CLIENT IDs
+// -----------------------------------------
+const allowedClientIds = process.env.GOOGLE_CLIENT_IDS
+  ? process.env.GOOGLE_CLIENT_IDS.split(",").map((id) => id.trim())
+  : process.env.GOOGLE_CLIENT_ID
+    ? [process.env.GOOGLE_CLIENT_ID]
+    : [];
+
+console.log("✔ Admin - Allowed Google OAuth Client IDs:", allowedClientIds);
+
+const googleClient = new OAuth2Client();
 
 function createToken(userId) {
   return jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: "1d" });
@@ -95,9 +106,12 @@ export async function googleLogin(req, res, next) {
     const { idToken } = req.body;
     if (!idToken) return res.status(400).json({ error: "Missing idToken" });
 
+    // -----------------------------------------------
+    // 🔥 Verify Google ID token with MULTIPLE CLIENT IDs
+    // -----------------------------------------------
     const ticket = await googleClient.verifyIdToken({
       idToken,
-      audience: GOOGLE_CLIENT_ID,
+      audience: allowedClientIds,   // <-- IMPORTANT CHANGE
     });
     const payload = ticket.getPayload();
 
