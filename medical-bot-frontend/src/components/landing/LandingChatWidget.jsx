@@ -16,10 +16,10 @@ export default function LandingChatWidget() {
     const messagesEndRef = useRef(null);
 
     const suggestedQuestions = [
-        "Book a demo",
-        "How does it work?",
-        "See pricing",
-        "What specialties?"
+        "See lead capture demo",
+        "Integrations?",
+        "Pricing options",
+        "I'm a patient (Demo)"
     ];
 
     // Initial greeting when chat opens
@@ -27,7 +27,7 @@ export default function LandingChatWidget() {
         if (isOpen && messages.length === 0) {
             setMessages([{
                 role: 'assistant',
-                content: "Hi! 👋 Looking to streamline your practice with AI? I can help you discover how MedGuide transforms patient care for dentists, surgeons, and orthopaedic specialists."
+                content: "Hi! 👋 Interested in automating your Invisalign leads? I can show you how MedGuide captures after-hours inquiries and reduces front desk calls."
             }]);
         }
     }, [isOpen, messages.length]);
@@ -88,6 +88,15 @@ export default function LandingChatWidget() {
     const generateResponse = (userText, messageCount) => {
         const text = userText.toLowerCase();
 
+        // Detect patient symptom queries
+        const symptomKeywords = ['pain', 'hurt', 'ache', 'sore', 'swollen', 'bleeding', 'toothache', 'injury', 'symptom', 'sick', 'health', 'disease', 'fever', 'cough', 'patient', 'i have', 'i am suffering', 'i feel'];
+        const isPatientQuery = symptomKeywords.some(keyword => text.includes(keyword));
+
+        // If it's a patient symptom query, redirect to main chat app
+        if (isPatientQuery) {
+            return "I understand you're experiencing health concerns. MedGuide AI's symptom analysis is available in our main chat application.\n\n👉 Please click 'Start Chatting' at the top of this page to access the full AI symptom checker, where you can describe your symptoms in detail and receive structured guidance.\n\nThis widget is designed for healthcare professionals interested in implementing MedGuide AI in their practice.";
+        }
+
         // Booking/Demo intent
         if (text.includes('book') || text.includes('demo') || text.includes('consultation') || text.includes('schedule')) {
             return "Perfect! I'd love to schedule a personalized demo for you. Our AI assistant can analyze symptoms, provide evidence-based guidance, and save you hours each week. May I get your contact details to set this up?";
@@ -128,9 +137,9 @@ export default function LandingChatWidget() {
 
         // Default qualifying response
         const defaultResponses = [
-            "That's great to hear! MedGuide AI is trusted by over 500 medical practices. We reduce consultation time by 40% while improving patient satisfaction. What aspect interests you most - time savings, patient care, or both?",
-            "I appreciate you sharing that! Our platform is specifically designed for busy practitioners like you. We've helped practices cut administrative overhead and improve diagnosis accuracy. What challenges are you currently facing in your practice?",
-            "Interesting! Let me tell you what sets us apart: evidence-based AI, HIPAA-compliant security, and seamless EMR integration. Would you like to see how it works for your specialty?"
+            "Thank you for your interest in MedGuide AI! We help medical practices streamline patient intake and triage. Are you a healthcare professional looking to implement AI in your practice, or are you experiencing health concerns yourself?",
+            "I appreciate you reaching out! MedGuide AI is designed for clinics and hospitals. We reduce consultation time by 40% while improving patient satisfaction. Are you exploring this for your practice or another organization?",
+            "Great to connect! Our platform supports dental, surgical, and orthopaedic practices. What brings you here today - are you a practitioner interested in our solution, or do you have health questions?"
         ];
 
         return defaultResponses[Math.min(messageCount, defaultResponses.length - 1)];

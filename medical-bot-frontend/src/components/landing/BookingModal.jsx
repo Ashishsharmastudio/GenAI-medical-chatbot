@@ -151,7 +151,7 @@ export default function BookingModal({ isOpen, onClose }) {
                             required
                             disabled={isSubmitting}
                             className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all disabled:opacity-50"
-                            placeholder="+91-9140585097"
+                            placeholder="+1 (555) 123-4567"
                         />
                     </div>
 
@@ -250,3 +250,4 @@ export default function BookingModal({ isOpen, onClose }) {
         </div>
     );
 }
+

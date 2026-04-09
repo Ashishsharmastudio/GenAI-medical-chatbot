@@ -57,7 +57,7 @@ async function extractPdfText(fullPath) {
 }
 
 // -------- pipeline --------
-export async function loadAndChunk(folderPath) {
+export async function loadAndChunk(folderPath, userId = null) {
   console.log("[loadAndChunk] Starting. Input folderPath:", folderPath);
 
   const docs = [];
@@ -96,13 +96,16 @@ export async function loadAndChunk(folderPath) {
       const chunks = chunkText(text);
       const base = path.basename(file, ".pdf");
       chunks.forEach((chunkText, idx) => {
-        const id = normalizeId(base, idx);
+        // prefix chunk ID with userId so different users never collide
+        const rawId = normalizeId(base, idx);
+        const id = userId ? `u_${userId}_${rawId}` : rawId;
         docs.push({
           id,
           text: chunkText,
           metadata: {
             source: file,
-            text: chunkText, // keep the chunk text in metadata for retrieval
+            text: chunkText,
+            ...(userId ? { userId: String(userId) } : {}),
           },
         });
         if (idx < 3 || idx === chunks.length - 1) {
@@ -120,14 +123,14 @@ export async function loadAndChunk(folderPath) {
   return docs;
 }
 
-export async function buildIndex(dataDir) {
+export async function buildIndex(dataDir, userId = null) {
   console.log("[buildIndex] Starting with dataDir:", dataDir);
   const folderPath = path.isAbsolute(dataDir)
     ? dataDir
     : path.join(__dirname, dataDir);
   console.log("[buildIndex] Resolved folderPath:", folderPath);
 
-  const docs = await loadAndChunk(folderPath);
+  const docs = await loadAndChunk(folderPath, userId);
   if (!docs.length) {
     console.warn(`[buildIndex] No PDF chunks found in ${folderPath}`);
     return;
@@ -135,12 +138,11 @@ export async function buildIndex(dataDir) {
 
   console.log(`[buildIndex] Generating embeddings for ${docs.length} docs...`);
 
-  // Use text-embedding-004 (768-dim) for a stable Pinecone setup
-  // LangChain docs show this model explicitly.
   const embedder = new GoogleGenerativeAIEmbeddings({
     apiKey: process.env.GEMINI_API_KEY,
-    model: "text-embedding-004",
-  }); // Uses 768-dim vectors. :contentReference[oaicite:1]{index=1}
+    model: "gemini-embedding-001",
+    taskType: "SEMANTIC_SIMILARITY",
+  });
 
   // Batch embed to respect API limits
   const texts = docs.map((d) => d.text);
@@ -160,8 +162,6 @@ export async function buildIndex(dataDir) {
   const index = await getIndex();
   console.log("[buildIndex] Pinecone index ready.");
 
-  // Pinecone v2: upsert expects an array of records
-  // Index class docs / SDK. :contentReference[oaicite:2]{index=2}
   const UPSERT_BATCH = 100;
   for (let i = 0; i < docs.length; i += UPSERT_BATCH) {
     const sliceDocs = docs.slice(i, i + UPSERT_BATCH);
@@ -184,27 +184,30 @@ export async function buildIndex(dataDir) {
   console.log(`✅ [buildIndex] Indexed ${docs.length} chunks.`);
 }
 
-// Add optional `filter` param to scope results, e.g. { source: { $eq: "Medical_book .pdf" } }
-export async function queryRag(question, k = 3, filter = undefined) {
-  console.log("[queryRag] Question:", question);
+// queryRag — scopes results to the caller's own PDFs when userId is provided
+export async function queryRag(question, k = 8, userId = null) {
+  console.log("[queryRag] Question:", question, "| userId:", userId);
 
   const embedder = new GoogleGenerativeAIEmbeddings({
     apiKey: process.env.GEMINI_API_KEY,
-    model: "text-embedding-004", // 768-dim; match your Pinecone index
-  }); // :contentReference[oaicite:3]{index=3}
+    model: "gemini-embedding-001",
+    taskType: "SEMANTIC_SIMILARITY",
+  });
 
   const qvec = await embedder.embedQuery(question);
-
   const index = await getIndex();
 
-  // Pinecone v2: pass the query object directly
-  // You can include a metadata `filter` to restrict results. :contentReference[oaicite:4]{index=4}
+  // Scope to this user's chunks if they have uploaded any PDFs
+  const pineconeFilter = userId
+    ? { userId: { $eq: String(userId) } }
+    : undefined;
+
   const { matches = [] } = await index.query({
     vector: qvec,
     topK: k,
     includeMetadata: true,
     includeValues: false,
-    filter,
+    filter: pineconeFilter,
   });
   console.log(`[queryRag] Retrieved ${matches.length} matches.`);
 
@@ -220,7 +223,6 @@ export async function queryRag(question, k = 3, filter = undefined) {
 
   const contents = [system_prompt, `${context}\n\nQuestion: ${question}`];
 
-  // @google/genai generateContent — mirrors SDK examples. :contentReference[oaicite:5]{index=5}
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents,

@@ -1,8 +1,14 @@
 // /medical-bot-backend/controllers/adminController.js
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import User from "../models/User.js";
 import { JWT_SECRET } from "../config/index.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DATA_DIR = path.resolve(__dirname, "../data");
 
 // -----------------------------------------
 // ✅ Support MULTIPLE GOOGLE CLIENT IDs
@@ -183,5 +189,51 @@ export async function status(req, res) {
     });
   } catch (_err) {
     res.status(500).json({ ok: false, error: "Admin status check failed" });
+  }
+}
+
+// GET /api/admin/list-files
+export function listFiles(_req, res) {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      return res.json({ files: [] });
+    }
+    const entries = fs
+      .readdirSync(DATA_DIR)
+      .filter((f) => f.toLowerCase().endsWith(".pdf"))
+      .map((name) => {
+        const stat = fs.statSync(path.join(DATA_DIR, name));
+        return {
+          name,
+          size: stat.size,
+          uploadedAt: stat.mtime.toISOString(),
+        };
+      });
+    res.json({ files: entries });
+  } catch (err) {
+    res.status(500).json({ error: "Could not list files", detail: err.message });
+  }
+}
+
+// DELETE /api/admin/delete-file/:filename
+export function deleteFile(req, res) {
+  try {
+    const { filename } = req.params;
+
+    // Guard against path traversal
+    const safe = path.basename(filename);
+    if (!safe.toLowerCase().endsWith(".pdf")) {
+      return res.status(400).json({ error: "Only PDF files can be deleted" });
+    }
+
+    const target = path.join(DATA_DIR, safe);
+    if (!fs.existsSync(target)) {
+      return res.status(404).json({ error: "File not found" });
+    }
+
+    fs.unlinkSync(target);
+    res.json({ success: true, deleted: safe });
+  } catch (err) {
+    res.status(500).json({ error: "Could not delete file", detail: err.message });
   }
 }

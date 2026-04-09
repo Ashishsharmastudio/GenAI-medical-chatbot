@@ -61,15 +61,15 @@ export default function ProblemSolutionSection() {
                         transition={{ type: "spring", stiffness: 300 }}
                     >
                         <span className="mr-2">⚠️</span>
-                        <span>Current Healthcare Challenges</span>
+                        <span>Why Most Dental Websites Fail</span>
                     </motion.div>
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                        The Problem for Modern Clinics
+                        The Problem for Modern Practices
                     </h2>
                     <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        Dentists, surgeons and orthopaedic teams aren't short of expertise.
-                        They're short of <span className="font-semibold text-gray-900">time</span> — drowning in unstructured messages, manual triage
-                        and scattered booking systems.
+                        Your font desk is overwhelmed, you're missing calls after 5 PM, and
+                        <span className="font-semibold text-gray-900"> valuable Invisalign leads </span>
+                        are bouncing because they can't get instant answers.
                     </p>
                 </motion.div>
 
@@ -88,7 +88,7 @@ export default function ProblemSolutionSection() {
                             </div>
 
                             <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-4">
-                                What Practitioners Are Dealing With
+                                Losing Patients & Time
                             </h3>
 
                             <motion.ul
@@ -97,29 +97,29 @@ export default function ProblemSolutionSection() {
                             >
                                 {[
                                     {
-                                        icon: "📱",
-                                        title: "Unstructured intake:",
-                                        desc: "symptoms arrive as WhatsApp messages, phone calls and vague \"I have pain\" notes, with no standard questions or structured history."
+                                        icon: "🌙",
+                                        title: "Missed After-Hours Leads:",
+                                        desc: "60% of searches happen after 5 PM. If nobody answers, they go to your competitor."
                                     },
                                     {
-                                        icon: "🤔",
-                                        title: "Manual triage:",
-                                        desc: "front desk and nursing staff guess urgency and specialty, and high-risk cases can be buried under routine queries."
+                                        icon: "📞",
+                                        title: "Front Desk Overwhelm:",
+                                        desc: "Staff wasting hours answering 'do you take my insurance?' instead of closing cases."
                                     },
                                     {
-                                        icon: "🔄",
-                                        title: "Repetitive follow-ups:",
-                                        desc: "doctors spend evenings answering the same post-op & treatment questions instead of focusing on complex decisions."
+                                        icon: "💸",
+                                        title: "Unqualified Consults:",
+                                        desc: "Free exams booked by patients who are price-shopping or not clinically eligible."
                                     },
                                     {
-                                        icon: "📅",
-                                        title: "Scattered bookings:",
-                                        desc: "appointments are split across phone diaries, WhatsApp threads and reception logs — conversations don't automatically turn into confirmed slots."
+                                        icon: "🩸",
+                                        title: "Post-Op Panic Calls:",
+                                        desc: "Doctors disturbed at night for routine questions like 'is this swelling normal?'"
                                     },
                                     {
-                                        icon: "📊",
-                                        title: "No single source of truth:",
-                                        desc: "owners and admins lack a central dashboard to see patient queries, triage load, and how many conversations actually convert into bookings."
+                                        icon: "📉",
+                                        title: "No Lead Tracking:",
+                                        desc: "Leads lost on sticky notes or forgotten in voicemail inboxes."
                                     }
                                 ].map((item, i) => (
                                     <motion.li
@@ -153,15 +153,14 @@ export default function ProblemSolutionSection() {
                             </div>
 
                             <h3 className="text-2xl font-bold text-gray-900 mb-4 mt-4">
-                                How MedGuide AI Helps
+                                The MedGuide Advantage
                             </h3>
 
                             <motion.p
                                 className="text-sm text-gray-700 mb-6 bg-white/60 p-4 rounded-xl border border-blue-100"
                                 variants={scaleIn}
                             >
-                                MedGuide AI sits where the chaos starts — <span className="font-semibold text-blue-700">in the conversation</span> — and turns it into
-                                structured, trackable workflows your team can rely on.
+                                MedGuide AI turns your website into a <span className="font-semibold text-blue-700">24/7 lead capture machine</span> that educates, qualifies, and books patients automatically.
                             </motion.p>
 
                             <motion.ul
@@ -170,29 +169,29 @@ export default function ProblemSolutionSection() {
                             >
                                 {[
                                     {
-                                        icon: "✅",
-                                        title: "Structured intake & triage:",
-                                        desc: "the assistant asks consistent, specialty-aware questions and organises symptoms into a clear, clinician-ready summary."
+                                        icon: "⚡",
+                                        title: "Instant Lead Capture:",
+                                        desc: "Engage visitors immediately, 24/7/365. Never miss another after-hours opportunity."
                                     },
                                     {
-                                        icon: "📋",
-                                        title: "Audit-ready history:",
-                                        desc: "every question and answer is stored per user, giving you a reviewable, compliant trail of what was communicated."
+                                        icon: "🎯",
+                                        title: "Aligner Qualification:",
+                                        desc: "AI asks screening questions to identify high-value Invisalign candidates before they book."
                                     },
                                     {
-                                        icon: "📚",
-                                        title: "Source-aware guidance:",
-                                        desc: "responses can be constrained to approved documents and guidelines, so teams know exactly which knowledge base the AI is using."
+                                        icon: "🩺",
+                                        title: "Post-Op Reassurance:",
+                                        desc: "Instantly answers routine care questions using your approved clinical protocols."
                                     },
                                     {
-                                        icon: "🗓️",
-                                        title: "Chat-native booking (add-on):",
-                                        desc: "turn conversations into confirmed appointments by letting the chatbot capture details and write directly into your booking flow."
+                                        icon: "📅",
+                                        title: "Direct Booking:",
+                                        desc: "Qualified leads are guided directly to your online scheduling page."
                                     },
                                     {
-                                        icon: "📈",
-                                        title: "Admin dashboard (add-on):",
-                                        desc: "give clinic owners and ops teams a single pane of glass to monitor queries, triage queues, bookings and assistant performance in real time."
+                                        icon: "🔔",
+                                        title: "Instant Alerts:",
+                                        desc: "Your team gets email/SMS notifications the moment a hot lead comes in."
                                     }
                                 ].map((item, i) => (
                                     <motion.li
@@ -220,7 +219,7 @@ export default function ProblemSolutionSection() {
                                     transition={{ type: "spring", stiffness: 300 }}
                                 >
                                     <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                                    Today: triage & structured chat
+                                    Live: 24/7 Lead Capture
                                 </motion.span>
                                 <motion.span
                                     className="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
@@ -228,7 +227,7 @@ export default function ProblemSolutionSection() {
                                     transition={{ type: "spring", stiffness: 300 }}
                                 >
                                     <span className="mr-2">🚀</span>
-                                    Roadmap: booking & admin dashboard
+                                    Plus: PMS Integrations (Q2)
                                 </motion.span>
                             </motion.div>
                         </motion.div>

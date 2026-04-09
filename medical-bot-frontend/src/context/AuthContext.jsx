@@ -34,10 +34,15 @@ export function AuthProvider({ children }) {
     }
   }
 
-  function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
+  async function logout() {
+    try {
+      // Delete all PDFs this user uploaded from the server
+      await api.cleanupUserFiles().catch(() => {/* ignore if already gone */});
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setUser(null);
+    }
   }
 
   const value = useMemo(

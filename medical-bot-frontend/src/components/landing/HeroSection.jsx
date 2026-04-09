@@ -16,14 +16,14 @@ export default function HeroSection({ navigate, specialties, currentSpecialtyInd
                     className="inline-flex items-center px-4 py-1 mb-6 text-sm font-semibold rounded-full bg-blue-50 text-blue-700 border border-blue-100"
                 >
                     <span className="mr-2 text-base">✨</span>
-                    <span>Built for dentists, surgeons & orthopaedic teams</span>
+                    <span>Built exclusively for high-growth dental practices</span>
                 </motion.div>
 
                 <motion.h1
                     variants={fadeInUp}
                     className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
                 >
-                    AI Clinical Workflow Assistant for{' '}
+                    Automate Patient Intake & Triage for{' '}
                     <span
                         className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 inline-block min-w-[280px] md:min-w-[400px] transition-opacity duration-500"
                         style={{ opacity: fade ? 1 : 0 }}
@@ -31,14 +31,14 @@ export default function HeroSection({ navigate, specialties, currentSpecialtyInd
                         {specialties[currentSpecialtyIndex]}
                     </span>
                     <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-500">Clinical Clarity in Seconds</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-500">Turn Website Traffic into Booked Appts</span>
                 </motion.h1>
 
                 <motion.p
                     variants={fadeInUp}
                     className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed"
                 >
-                    MedGuide AI provides structured, evidence-informed symptom analysis and clinical workflow assistance for dental, surgical and orthopaedic practices. Designed for teams that need fast, reliable intake, triage support and patient education—without replacing clinical judgment.
+                    MedGuide AI qualifies aligner candidates, answers post-op questions, and reduces front desk calls by 60%. The only AI chatbot trained specifically for Invisalign, cosmetic, and general dentistry workflows.
                 </motion.p>
 
                 <motion.div

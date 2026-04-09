@@ -16,180 +16,181 @@ export const staggerContainer = {
 };
 
 // Specialties for rotating text
+// Specialties for rotating text
 export const specialties = [
-    'Orthopaedics',
-    'Physicians',
-    'Dental',
-    'Dermatology',
-    'Cardiology',
-    'ENT',
-    'Gynaecology',
-    'General Surgery',
-    'Neurology',
-    'Paediatrics'
+    'Aligner Leads',
+    'Cosmetic Inquiries',
+    'Post-Op Care',
+    'Emergency Triage',
+    'Treatment Info'
 ];
 
 // Stats data
 export const statsData = [
-    { label: "Reduced chair-side admin for dentists", icon: "🦷", color: "bg-purple-50 text-purple-700" },
-    { label: "Faster triage workflows for surgeons", icon: "🧑‍⚕️", color: "bg-orange-50 text-orange-700" },
-    { label: "Improved patient satisfaction in orthopaedics", icon: "🦴", color: "bg-green-50 text-green-700" }
+    { label: "3X more aligner leads from website traffic", icon: "🦷", color: "bg-blue-50 text-blue-700" },
+    { label: "60% reduction in front desk phone calls", icon: "📞", color: "bg-green-50 text-green-700" },
+    { label: "24/7 patient education on cosmetic procedures", icon: "⏰", color: "bg-purple-50 text-purple-700" }
 ];
 
 // Features data
+// Features data
 export const featuresData = [
     {
-        title: "Instant Analysis",
-        desc: "Real-time symptom organization and clinical context extraction across dentistry, surgery and orthopaedics."
+        title: "After-Hours Lead Capture",
+        desc: "Never miss an Invisalign inquiry again. Our AI widget captures name, email, and chief concern 24/7—even when your practice is closed.",
+        icon: "🌙"
     },
     {
-        title: "Smart Triage",
-        desc: "Intelligently prioritize cases based on urgency and severity using structured decision-support tools designed for clinical workflows."
+        title: "Aligner Qualification",
+        desc: "AI asks pre-screening questions to flag good aligner candidates, sending qualified leads directly to your case acceptance coordinator.",
+        icon: "🎯"
     },
     {
-        title: "Secure Data",
-        desc: "Enterprise-grade encryption, HIPAA-aligned safeguards and strict access controls for all patient interactions."
+        title: "Post-Procedure Q&A",
+        desc: "Patients ask 'Is bleeding normal after extraction?' AI responds instantly with your approved post-op protocols—reducing panic calls.",
+        icon: "🩺"
+    },
+    {
+        title: "Cosmetic Education",
+        desc: "Whitening, veneers, bonding explained in simple terms. Sets realistic expectations and pre-qualifies patients before the consultation.",
+        icon: "✨"
     }
 ];
 
-// Specialties section data
+// Specialties section data (Dental Use Cases)
 export const specialtiesData = [
     {
         icon: "🦷",
-        title: "Dentists & Dental Clinics",
-        desc: "Pre-visit intake, recall reminders and post-procedure education—delivered through structured, AI-guided conversations."
+        title: "Aligner & Orthodontics",
+        desc: "Qualify Invisalign candidates, answer aligner care questions, capture leads from after-hours web traffic."
     },
     {
-        icon: "🧑‍⚕️",
-        title: "Surgeons & OT Teams",
-        desc: "Support pre-op assessments, consent workflows and immediate post-surgery follow-ups with clear checklists."
+        icon: "✨",
+        title: "Cosmetic Dentistry",
+        desc: "Educate on whitening, veneers, bonding. Set expectations on results, timeline, and cost before consultation."
     },
     {
-        icon: "🦴",
-        title: "Orthopaedic Centres",
-        desc: "Triage joint pain, sports injuries and post-op rehab with structured flows your team can trust."
+        icon: "🚨",
+        title: "Emergency Triage",
+        desc: "Flag urgent cases (knocked-out tooth, facial swelling) and route to emergency line. Handle non-urgent queries instantly."
     },
     {
-        icon: "🏥",
-        title: "Multi-specialty Hospitals",
-        desc: "Standardise triage and symptom checks across all departments without slowing anyone down."
+        icon: "🩹",
+        title: "Post-Procedure Care",
+        desc: "Answer routine post-op questions (bleeding, swelling, pain management) with your approved protocols—24/7."
     }
 ];
 
 // Innovation data
 export const innovationData = [
-    { title: "Advanced NLP", desc: "Understand complex dental, surgical and orthopaedic queries in natural language." },
-    { title: "Deep Learning", desc: "Continuous improvement through advanced machine learning models tuned on healthcare workflows." },
-    { title: "Global Knowledge", desc: "Access to worldwide medical guidelines, best practices and clinical research." }
+    { title: "Dental-Tuned NLP", desc: "Understands queries like 'Invisalign pain', 'dry socket', and 'veneer chipping' naturally." },
+    { title: "Practice Protocols", desc: "Customizable to your specific post-op instructions and appointment scheduling rules." },
+    { title: "Lead Qualification", desc: "Identifies high-value cosmetic cases vs routine check-ups automatically." }
 ];
 
 // Solutions data
 export const solutionsData = [
     {
-        title: "Dental Clinics & Chains",
-        desc: "Triage tooth pain, aligner queries and routine check-ups before the patient even walks in.",
+        title: "Single Practices",
+        desc: "Convert more website visitors into booked appointments without extra staff.",
         icon: "🦷"
     },
     {
-        title: "Surgical Departments",
-        desc: "Pre-op screening, risk flags and post-op monitoring summarised for your surgical teams.",
-        icon: "🔪"
+        title: "Multi-Location Groups",
+        desc: "Standardize patient intake and education across all your office locations.",
+        icon: "🏢"
     },
     {
-        title: "Orthopaedic Centres",
-        desc: "Guide patients on joint pain, fractures and rehab plans with structured, easy-to-follow flows.",
-        icon: "🦴"
+        title: "Cosmetic Centers",
+        desc: "Pre-qualify high-value veneer and makeover candidates 24/7.",
+        icon: "✨"
     },
     {
-        title: "Hospitals & Health Systems",
-        desc: "Unify triage, symptom checks and education across emergency, OPD and IPD in one AI layer.",
-        icon: "🏥"
+        title: "Orthodontists",
+        desc: "Capture aligner leads and answer routine bracket/tray questions automatically.",
+        icon: "😁"
     }
 ];
 
 // FAQ items
 export const faqItems = [
     {
-        question: 'Is MedGuide AI free to use?',
-        answer: 'Yes. Core features are free for patients. Clinics and hospitals can opt into premium workflows and integrations on top.'
+        question: 'How does it help with Invisalign cases?',
+        answer: 'Widget qualifies candidates 24/7, captures contact info, and sends chat history to your coordinator.'
     },
     {
-        question: 'Is my data secure?',
-        answer: 'We use enterprise-grade encryption, robust access controls and HIPAA-style security architecture. For eligible organizations, BAAs can be arranged.'
+        question: 'Does it integrate with Dentrix/Eaglesoft?',
+        answer: 'Direct integrations are on our roadmap (Q2 2025). Currently, we provide email alerts and CSV exports for leads.'
     },
     {
-        question: 'Is this for dentists, surgeons and orthopaedic doctors too?',
-        answer: 'Absolutely. MedGuide AI is used by dental clinics, surgical departments and orthopaedic centres for triage, pre-visit screening and post-op follow-ups.'
+        question: 'Is it HIPAA compliant?',
+        answer: 'Yes, we use enterprise-grade encryption and access controls. BAA provided for Growth and Enterprise plans.'
     },
     {
-        question: 'Does MedGuide AI replace my doctor?',
-        answer: 'No. MedGuide AI supports clinicians with structured triage and education, but it does not replace in-person examination, diagnosis or treatment by a licensed professional.'
+        question: 'Can it handle emergency calls?',
+        answer: 'Yes. It detects keywords like "knocked out tooth" or "swelling" and prompts patients to call your emergency line immediately.'
     },
     {
-        question: 'What technology powers MedGuide AI?',
-        answer: 'MedGuide AI is powered by Google Gemini AI with LangChain for conversation management, plus advanced NLP and vector search capabilities for accurate medical guidance.'
+        question: 'How long does setup take?',
+        answer: 'About 48 hours. We provide pre-built templates for aligners, cosmetic queries, and post-op care that you can customize.'
     },
     {
-        question: 'Do you offer enterprise contracts?',
-        answer: 'Yes. We offer one-time setup packages for clinics and hospitals with lifetime access. Contact us for enterprise pricing and customization options.'
+        question: 'Do patients need an app?',
+        answer: 'No. The chat widget lives directly on your existing practice website and works on any mobile device.'
     }
 ];
 
 // Pricing tiers (One-time payment model)
+// Pricing tiers (SaaS model)
 export const pricingTiers = [
     {
-        name: "Free",
-        subtitle: "For Patients",
-        price: "$0",
-        period: "Forever",
-        description: "Perfect for individuals seeking medical guidance",
+        name: "Starter",
+        subtitle: "Single Location",
+        price: "$197",
+        period: "/month",
+        description: "Perfect for solo dental practices building their digital presence.",
         features: [
-            "AI-powered symptom analysis",
-            "Basic triage recommendations",
-            "Conversation history",
-            "Multi-specialty support",
-            "24/7 availability"
+            "500 conversations/month",
+            "Branded chatbot widget",
+            "3 Custom Q&A flows (Aligners, etc)",
+            "Email lead notifications",
+            "Basic support"
         ],
-        cta: "Start Free Chat",
+        cta: "Start Free Trial",
         highlighted: false,
-        icon: "🩺"
+        icon: "�"
     },
     {
-        name: "Professional",
-        subtitle: "For Clinics",
-        price: "$2,499",
-        period: "One-time setup",
-        description: "Complete solution for dental, surgical & orthopaedic practices",
+        name: "Growth",
+        subtitle: "2-5 Locations",
+        price: "$497",
+        period: "/month",
+        description: "For growing groups wanting to dominate local aligner/cosmetic markets.",
         features: [
-            "Everything in Free",
-            "Custom clinic branding",
-            "Patient intake automation",
-            "Structured triage workflows",
-            "Audit-ready conversation logs",
-            "Priority email support",
-            "Source-aware AI responses",
-            "Up to 5 practitioners"
+            "Unlimited conversations",
+            "Multi-location routing",
+            "Custom treatment guides",
+            "Priority support",
+            "BAA for HIPAA compliance",
+            "Calendar integration (Zapier)"
         ],
         cta: "Get Started",
         highlighted: true,
-        icon: "🏥"
+        icon: "🚀"
     },
     {
-        name: "Enterprise",
-        subtitle: "For Hospitals",
+        name: "DSO / Enterprise",
+        subtitle: "6+ Locations",
         price: "Custom",
-        period: "One-time setup",
-        description: "Tailored for multi-specialty hospitals & health systems",
+        period: "Volume pricing",
+        description: "White-label solution for DSOs and large dental networks.",
         features: [
-            "Everything in Professional",
-            "Admin dashboard (coming soon)",
-            "EHR integrations (roadmap)",
-            "Multi-location support",
-            "Custom knowledge base",
-            "BAA & compliance support",
-            "Dedicated account manager",
-            "Unlimited practitioners",
-            "API access"
+            "Everything in Growth",
+            "PMS Integration (Dentrix/Eaglesoft)",
+            "Dedicated success manager",
+            "Custom AI training",
+            "API Access",
+            "White-label options"
         ],
         cta: "Contact Sales",
         highlighted: false,
@@ -201,39 +202,33 @@ export const pricingTiers = [
 export const technologyData = [
     {
         name: "Google Gemini AI",
-        description: "Advanced natural language processing",
-        icon: "🤖",
-        category: "AI Engine"
+        description: "Dental-tuned AI that understands clinical terminology for aligners and implants.",
+        icon: "🤖"
     },
     {
-        name: "LangChain",
-        description: "Conversation memory & context",
-        icon: "🔗",
-        category: "AI Framework"
+        name: "Lead Capture",
+        description: "Instant notification system via Email (and SMS coming soon).",
+        icon: "⚡"
     },
     {
-        name: "MongoDB",
-        description: "Secure data storage",
-        icon: "🍃",
-        category: "Database"
+        name: "HIPAA Compliant",
+        description: "Secure, encrypted infrastructure safe for patient data.",
+        icon: "🔒"
     },
     {
-        name: "React + Vite",
-        description: "Modern, fast frontend",
-        icon: "⚛️",
-        category: "Frontend"
+        name: "Mobile First",
+        description: "Works perfectly on patient smartphones without app downloads.",
+        icon: "📱"
     },
     {
-        name: "AES-256 Encryption",
-        description: "Enterprise-grade security",
-        icon: "🔒",
-        category: "Security"
+        name: "Website Widget",
+        description: "Embeds on WordPress, Wix, Squarespace, and custom sites.",
+        icon: "💻"
     },
     {
-        name: "HIPAA-Aligned",
-        description: "Healthcare compliance",
-        icon: "✅",
-        category: "Compliance"
+        name: "Encryption",
+        description: "AES-256 military-grade protection for all chat history.",
+        icon: "🛡️"
     }
 ];
 
@@ -241,38 +236,32 @@ export const technologyData = [
 export const roadmapData = [
     {
         status: "live",
-        title: "AI Symptom Analysis",
-        description: "Structured patient intake and intelligent triage across dental, surgical and orthopaedic specialties",
+        title: "24/7 Lead Capture",
+        description: "Live chat widget that captures and qualifies patient leads automatedly.",
         quarter: "Now Available"
     },
     {
         status: "live",
-        title: "Conversation History",
-        description: "Audit-ready trails with searchable patient interactions and compliant logging",
+        title: "Aligner Screening",
+        description: "Pre-built flow to qualify Invisalign/ClearCorrect candidates.",
         quarter: "Now Available"
     },
     {
         status: "in-progress",
-        title: "Chat-Native Booking",
-        description: "Turn conversations into confirmed appointments directly from the chat interface",
-        quarter: "Q1 2025"
-    },
-    {
-        status: "in-progress",
-        title: "Admin Dashboard",
-        description: "Real-time monitoring of queries, triage queues, bookings and assistant performance",
+        title: "Calendar Sync",
+        description: "Direct booking into Calendly, Acuity, and Google Calendar.",
         quarter: "Q1 2025"
     },
     {
         status: "planned",
-        title: "EHR Integrations",
-        description: "Seamless integration with major electronic health record systems",
+        title: "PMS Integration",
+        description: "Deep integration with Dentrix, Eaglesoft, and Open Dental.",
         quarter: "Q2 2025"
     },
     {
         status: "planned",
-        title: "Voice Interface",
-        description: "Voice input and output for hands-free patient interactions",
+        title: "SMS Campaigns",
+        description: "Automated follow-up texts for unbooked leads.",
         quarter: "Q3 2025"
     }
 ];
@@ -318,40 +307,40 @@ export const structuredData = {
         {
             "@type": "SoftwareApplication",
             "name": "MedGuide AI",
-            "applicationCategory": "MedicalApplication",
+            "applicationCategory": "DentalApplication",
             "operatingSystem": "Web",
             "offers": {
                 "@type": "Offer",
-                "price": "0",
+                "price": "197",
                 "priceCurrency": "USD"
             },
-            "description": "AI-powered medical assistant for dentists, surgeons, orthopaedic clinics, hospitals and patients, providing instant health guidance and symptom checking."
+            "description": "AI-powered patient intake and lead capture for dental practices. Qualifies Invisalign candidates and answers post-op questions 24/7."
         },
         {
             "@type": "FAQPage",
             "mainEntity": [
                 {
                     "@type": "Question",
-                    "name": "Is MedGuide AI free to use?",
+                    "name": "How does MedGuide AI help dental practices?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Yes, our core features are completely free for patients."
+                        "text": "It captures after-hours leads, qualifies aligner candidates, and answers routine patient questions automatically."
                     }
                 },
                 {
                     "@type": "Question",
-                    "name": "Is my data secure?",
+                    "name": "Is it HIPAA compliant?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Absolutely. We use enterprise-grade encryption and are HIPAA compliant."
+                        "text": "Yes, we use enterprise-grade encryption and providing BAAs for dental practices."
                     }
                 },
                 {
                     "@type": "Question",
-                    "name": "Who is MedGuide AI for?",
+                    "name": "Does it integrate with PMS?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "MedGuide AI is built for dentists, surgeons, orthopaedic doctors, hospitals, clinics and patients who need fast, structured and safe medical guidance."
+                        "text": "Integrations with Dentrix, Eaglesoft, and Open Dental are coming in Q2 2025."
                     }
                 }
             ]

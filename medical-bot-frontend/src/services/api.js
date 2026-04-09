@@ -20,17 +20,14 @@ async function http(path, { method = "GET", body, headers = {} } = {}) {
   });
   if (!res.ok) {
     let err;
-    try {
-      err = await res.json();
-    } catch (_) {
-      /* noop */
-    }
+    try { err = await res.json(); } catch (_) { /* noop */ }
     throw new Error(err?.error || err?.message || `HTTP ${res.status}`);
   }
   return res.json();
 }
 
 export const api = {
+  // ── Auth ────────────────────────────────────────────────────────────────────
   signup: (email, password) =>
     http("/api/auth/signup", { method: "POST", body: { email, password } }),
   login: (email, password) =>
@@ -38,19 +35,65 @@ export const api = {
   googleLogin: (idToken) =>
     http("/api/auth/google", { method: "POST", body: { idToken } }),
   me: () => http("/api/auth/me"),
-  ask: (question, filter) =>
-    http("/api/chat", { method: "POST", body: { question, filter } }),
-  // admin
-  status: () => http("/api/admin/status"),
-  uploadPdf: async (file) => {
-    const form = new FormData();
-    form.append("pdf", file);
-    const res = await fetch(`${API_BASE}/api/admin/upload-pdf`, {
-      method: "POST",
-      headers: { ...authHeader() },
-      body: form,
+  ask: (question) =>
+    http("/api/chat", { method: "POST", body: { question } }),
+
+  // ── Per-user PDF management (available to ALL logged-in users) ─────────────
+
+  /** List this user's uploaded PDFs */
+  listFiles: () => http("/api/user/files"),
+
+  /**
+   * Upload one or more PDFs for this user and trigger index rebuild.
+   * @param {File | File[]} files
+   * @param {(pct: number) => void} [onProgress]
+   */
+  uploadPdf: (files, onProgress) => {
+    return new Promise((resolve, reject) => {
+      const form = new FormData();
+      const fileArray = Array.isArray(files) ? files : [files];
+      fileArray.forEach((f) => form.append("pdf", f));
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${API_BASE}/api/user/upload`);
+      const token = localStorage.getItem("token");
+      if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable && onProgress) {
+          onProgress(Math.round((e.loaded / e.total) * 100));
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try { resolve(JSON.parse(xhr.responseText)); }
+          catch (_) { resolve({ success: true }); }
+        } else {
+          let errMsg = `Upload failed (HTTP ${xhr.status})`;
+          try {
+            const body = JSON.parse(xhr.responseText);
+            errMsg = body.error || body.message || errMsg;
+          } catch (_) { /* noop */ }
+          reject(new Error(errMsg));
+        }
+      };
+      xhr.onerror = () => reject(new Error("Network error during upload"));
+      xhr.send(form);
     });
-    if (!res.ok) throw new Error("Upload failed");
-    return res.json();
   },
+
+  /** Delete a specific PDF belonging to this user */
+  deletePdf: (filename) =>
+    http(`/api/user/files/${encodeURIComponent(filename)}`, { method: "DELETE" }),
+
+  /**
+   * Delete ALL of this user's uploaded PDFs.
+   * Call this on logout so files don't persist.
+   */
+  cleanupUserFiles: () =>
+    http("/api/user/cleanup", { method: "DELETE" }),
+
+  // ── Admin ────────────────────────────────────────────────────────────────────
+  status: () => http("/api/admin/status"),
 };

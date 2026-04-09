@@ -46,9 +46,9 @@ export default function Landing() {
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">
             <SEO
-                title="AI Clinical Workflow Assistant & Symptom Analysis for Dentists, Surgeons & Orthopaedics"
-                description="MedGuide AI delivers structured symptom analysis, triage assistance and patient guidance for dental, surgical and orthopaedic practices—powered by advanced healthcare AI."
-                keywords="medical ai, symptom checker, health assistant, dentist ai, surgeon ai, orthopaedic ai, telemedicine"
+                title="AI Chatbot for Dental Practices | Aligner Lead Capture & Patient Education"
+                description="Turn your dental website into a 24/7 lead machine. AI chatbot captures aligner inquiries, answers post-op questions, and reduces front desk calls by 60%."
+                keywords="dental chatbot, invisalign lead capture, dental practice ai, cosmetic density marketing, patient intake automation"
                 canonical="https://medguide-ai.com/"
             />
             <script type="application/ld+json">
@@ -66,6 +66,7 @@ export default function Landing() {
             <ProblemSolutionSection />
             <FeaturesSection />
             <SpecialtiesSection />
+
             <WhyWorkWithUs />
             <TechnologySection />
             <InnovationSection />
